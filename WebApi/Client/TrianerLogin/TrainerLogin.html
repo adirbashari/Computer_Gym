@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="../../pic/icon_website.jpg" />
+    <title>Computer Gym</title>
+    <meta charset="utf-8" />
+    <script src="../Ajax_functions.js"></script>
+    <script src="../../Scripts/jquery-3.3.1.min.js"></script>
+    <script src="computerGym.js"></script>
+    <link href="../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="computerGym.css" rel="stylesheet" />
+    <title></title>
+
+    <script>
+        //להעביר אותו לדף ראשי
+        let STATUS_OK = 200;
+
+
+        $(document).ready(function () {
+            sessionStorage.clear();
+
+        });
+
+
+        //Trainer verification function
+        function Login_Validation() {
+            let id = $("#id")[0].value;
+            let password = $("#password")[0].value;
+
+
+            if (id == "" || password == "") {
+                alert("אנא מלא את כל השדות");
+                return;
+            }
+            if (id.length != 9) {
+                alert(" תעודת זהות חייבת להכיל 9 ספרות");
+                return;
+            }
+
+            let db_id_password = GetTrainerIdAndPassword(id);
+            console.log(id);
+            console.log(password);
+            console.log(db_id_password);
+            if (db_id_password.responseJSON == undefined) {
+                alert("תעודת זהות או סיסמא שגויים נסה שנית");
+                return;
+
+            }
+            if (db_id_password.responseJSON.Trainer_Id == id && db_id_password.responseJSON.Password == password) {
+                sessionStorage.setItem("trainer_id", id);
+                alert("התחברת בהצלחה");
+                location.href = "../TrainerMenu/Menu.html";
+            }
+
+            else {
+                alert("תעודת זהות או סיסמא שגויים נסה שנית");
+            }
+
+
+        }
+
+        //Function for transferring coach to login page
+        function Move_To_Registration() {
+            location.href = "../TrainerRegistration/TrainerRegistration.html";
+        }
+
+
+    </script>
+
+
+
+</head>
+<body dir="rtl">
+    <div>
+        <h1 class="tittle">Computer Gym</h1>
+    </div>
+    <div class="form-box">
+        <h1>התחברות מאמן</h1>
+
+        <div class="input-box">
+            <i class="fa fa-user"></i>
+            <input id="id" type="number" placeholder="תעודת זהות" />
+        </div>
+
+        <div class="input-box">
+            <i class="fa fa-key"></i>
+            <input id="password" type="password" placeholder="סיסמא"  />
+            <span class="eye" onclick="myFunction()">
+                <i id="hide1" class="fa fa-eye"></i>
+                <i id="hide2" class="fa fa-eye-slash"></i>
+            </span>
+        </div>
+
+        <button onclick="Login_Validation()" type="button" class="login-btn" >כניסה</button>
+
+        <div>
+            <button onclick="Move_To_Registration()" type="button" class="new-user-btn">משתמש חדש?</button>
+        </div>
+    </div>
+    <div>
+        <h1 class="side">WHAT THE MIND BELIEVES</h1>
+    </div>
+
+</body>
+</html>

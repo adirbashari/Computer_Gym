@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="../../pic/icon_website.jpg" />
+    <title>Computer Gym</title>
+    <meta charset="utf-8" />
+    <script src="../Ajax_functions.js"></script>
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link href="manage3.css" rel="stylesheet" />
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            /*padding: 5px;*/
+            border: 1px solid black;
+        }
+
+
+
+        input[type=text] {
+            border: none;
+        }
+
+        button {
+            /*option1*/
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            background-color: #008CBA; /* Blue */
+            /*option2*/
+            /*background-color: white;
+            color: black;
+            border: 2px solid #4CAF50;*/
+        }
+    </style>
+
+
+    <script>
+        let STATUS_OK = 200;
+
+        $(document).ready(function () { Build_All_Facilities_Video_Links(); });
+
+        //Function to display all links for facilities
+        function Build_All_Facilities_Video_Links() {
+            let video_links = GetFacilityVideoLink().responseJSON;
+            console.log(video_links);
+
+            let div_video_links = $("#video_links");
+            div_video_links.empty();
+
+            for (let i = 0; i < video_links.length; i++) {
+                div_video_links.append(Create_Tr(video_links[i]));
+
+            }
+
+
+            function Create_Tr(video_link) {
+
+                return `<tr>
+                            <td style="background-color:red"><input type="text" readonly="readonly" class="${video_link.Video_Link_Code}" value="${video_link.Video_Link_Code}"></td>
+                            <td style="background-color:red"><input type="text" readonly="readonly" onchange="Show_Button('update${video_link.Video_Link_Code}')" class="${video_link.Video_Link_Code}" value="${video_link.Facility_Code}"></td>
+                            <td style="background-color:aqua"><input type="text" onchange="Show_Button('update${video_link.Video_Link_Code}')" class="${video_link.Video_Link_Code}" value="${video_link.Video_Link}"></td>
+                            <td style="border-bottom:hidden;border-left:hidden;border-top:hidden;">
+                            <button onclick="Update_Change_In_Video_Link(${video_link.Video_Link_Code})" id="update${video_link.Video_Link_Code}" style="visibility:hidden" >שמור שינוי</button>
+                            </td>
+                                                                    </tr>`;
+
+            }
+
+
+        }
+
+
+        function Show_Button(button_code) {
+            $(`#${button_code}`).css('visibility', 'visible');
+        };
+
+        function Hide_Button(button_code) {
+            $(`#${button_code}`).css('visibility', 'hidden');
+        };
+
+
+        //Function to update video link for facility
+        function Update_Change_In_Video_Link(button_code) {
+            $(`#update${button_code}`).css('visibility', 'hidden');
+            let video_link = $(`.${button_code}`);
+
+
+            let video_link_data = {
+                Video_Link_Code: button_code,
+                Video_Link: video_link[2].value,
+            };
+            console.log(video_link_data);
+
+            let res = UpdateFacilityVideoLink(video_link_data).status;
+            if (res == STATUS_OK) {
+                Build_All_Facilities_Video_Links();
+                alert(`הנתונים נשמרו בהצלחה עבור קוד הקישור :  ${video_link_data.Video_Link_Code}`);
+            }
+            else {
+
+                alert(`שגיאה בהזנת נתונים לקישור בעל הקוד: ${video_link_data.Video_Link_Code} `);
+            }
+
+        }
+
+
+        //Function to delete a video link for a facility
+        function Delete_Video_Link() {
+            let video_link_code = $("#delete_video_link");
+
+            if (video_link_code[0].value != "") {
+                if (DeleteFacilityVideoLink(video_link_code[0].value).status == STATUS_OK) {
+                    Build_All_Facilities_Video_Links();
+                    alert("הקישור נמחק בהצלחה");
+                } else {
+                    alert("קוד קישור לא קיים אנא הזן קוד קישור תקין");
+                }
+
+            }
+            else {
+                alert("אנא הזן קוד קישור");
+
+            }
+
+        }
+
+
+        //Function to add a video link to a facility
+        function Add_New_Video_Link() {
+
+            let new_video_link_input = $(".new_video_link_input");
+
+            let video_link_data = {
+                Facility_Code: new_video_link_input[0].value,
+                Video_Link: new_video_link_input[1].value,
+            };
+
+
+            if (AddFacilityVideoLink(video_link_data).status == STATUS_OK) {
+                Build_All_Facilities_Video_Links();
+                alert("קישור נוסף בהצלחה");
+            }
+            else {
+                alert("שגיאה בהוספת קישור- קוד מתקן לא תקין");
+
+            }
+        }
+
+
+        // A function that checks whether the text boxes for adding a facility are empty
+         // If all goes well displays a button to add the facility
+        function Check_If_New_Video_Link_Text_Empty() {
+            Hide_Button("add_video_link_button");
+            let new_facility_input = $(".new_video_link_input");
+            if (new_facility_input[0].value != "" &&
+                new_facility_input[1].value != "")
+
+                Show_Button("add_video_link_button");
+
+
+        }
+
+
+    </script>
+
+
+
+
+</head>
+<body dir="rtl">
+
+
+
+    <div>
+
+        <header>
+            <h1>באפשרותך לבצע שינויים בקישורים לסירטונים על מתקני המכון:</h1>
+        </header>
+        <h2>הוספת קישור חדש:</h2>
+        <h4>אנא מלא את כל השדות כדי להוסיף קישור חדש:</h4>
+        <table >
+            <tr>
+                <td style="border:none">
+                    <span>קוד המתקן:</span>
+                </td>
+
+                <td style="border:none" >
+                    <input onblur="Check_If_New_Video_Link_Text_Empty()" placeholder="הזן קוד המתקן" id="Facility_Code" class="new_video_link_input">
+                </td>
+            </tr>
+            <tr>
+                <td style="border:none"><span>קישור לסירטון:</span></td>
+                <td style="border:none">
+                    <input onblur="Check_If_New_Video_Link_Text_Empty()" placeholder="הזן קישור לסירטון" id="Video_Link" class="new_video_link_input">
+                </td>
+            </tr>
+
+
+        </table><br />
+
+        <button style="visibility:hidden" id="add_video_link_button" onclick="Add_New_Video_Link()">הוסף קישור חדש</button>
+        <br />
+
+        <h2>מחיקת קישור קיים:</h2>
+
+        <p>אנא מלא את קוד הקישור עבור הקישור שתרצה למחוק:</p>
+        <span>קוד מתקן:</span><input placeholder=" הזן קוד קישור" id="delete_video_link">
+        <button onclick="Delete_Video_Link()">מחק קישור</button>
+        <br />
+        <br />
+
+
+        <h2>עריכת קישורים:</h2>
+        <span style="color:red">ניתן לערוך רק את השדות הצבועים </span><span style="color:blue">בכחול!</span><br /><br />
+
+        <table>
+
+            <thead>
+
+
+                <tr>
+                    <td style="background-color:red">קוד קישור</td>
+                    <td style="background-color:red">קוד מתקן</td>
+                    <td style="background-color:aqua">קישור לסירטון</td>
+                </tr>
+
+            </thead>
+            <tbody id="video_links"></tbody>
+
+        </table>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

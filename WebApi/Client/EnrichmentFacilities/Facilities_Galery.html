@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="../../pic/icon_website.jpg" />
+    <title>Computer Gym</title>
+
+    <script src="../../lib/jquery.js"></script>
+    <script src="../Ajax_functions.js"></script>
+    <link href="../../lib/w3.css" rel="stylesheet" />
+
+
+    <script>
+        let BACK = "גב";
+        let LEGS = "רגליים";
+        let CHEST = "חזה";
+        let BICEPS = "יד קדמית";
+        let SHOULDERS = "כתפיים";
+        let TRICEPS = "יד אחורית";
+        let categories_hebrew = [BACK, LEGS, CHEST, BICEPS, SHOULDERS, TRICEPS];
+        let categories = ["back", "legs", "chest", "biceps", "shoulders", "triceps"];
+
+
+        $(document).ready(function () {
+
+            let v = GetAllGymFacilitiesAndVideoLink();
+            console.log(v.responseJSON);
+            Build_Galery(v.responseJSON);
+        });
+
+        //Function for the construction of enrichment facilities Page
+        function Build_Galery(facilities) {
+
+
+            let back = $("#back");
+            let legs = $("#legs");
+            let triceps = $("#triceps");
+            let shoulders = $("#shoulders");
+            let biceps = $("#biceps");
+            let chest = $("#chest");
+
+            //console.log(facilities.filter((obj) => obj.Category === BACK).length);
+            for (let i = 0; i < categories_hebrew.length; i++) {
+                if (facilities.filter((obj) => obj.Category === categories_hebrew[i]).length == 0) {
+                    $(`#header_${categories[i]}`).hide();
+                }
+            }
+
+            back.empty();
+            legs.empty();
+            triceps.empty();
+            shoulders.empty();
+            biceps.empty();
+            chest.empty();
+
+            for (let i = 0; i < facilities.length; i++) {
+                switch (facilities[i].Category) {
+                    case BACK:
+                        back.append(Create_Facility(facilities[i]));
+                        break;
+                    case LEGS:
+                        legs.append(Create_Facility(facilities[i]));
+                        // code block
+                        break;
+                    case BICEPS:
+                        biceps.append(Create_Facility(facilities[i]));
+                        // code block
+                        break;
+                    case CHEST:
+                        chest.append(Create_Facility(facilities[i]));
+                        // code block
+                        break;
+                    case SHOULDERS:
+                        shoulders.append(Create_Facility(facilities[i]));
+                        // code block
+                        break;
+                    case TRICEPS:
+                        triceps.append(Create_Facility(facilities[i]));
+                        // code block
+                        break;
+                }
+
+                let link_div = $(`#${facilities[i].Facility_Code}`);
+                link_div.empty();
+                for (let t = 0; t < facilities[i].Video_Links.length; t++) {
+                    link_div.append(Create_Links(facilities[i].Video_Links[t]));
+                }
+
+
+            }
+
+
+            function Create_Facility(facility) {
+                return `<div class="w3-col m4 w3-margin-bottom" style="width:300px">
+                                <div class="w3-light-grey">
+                                    <img src="../../pic/facilities_pictures/${facility.Picture}.jpg" style="width:100%;height:200px;background-color:white;">
+                                        <div>facality name: ${facility.Facility_Name}</div>
+                                        <span>facality links:</span>
+                                        <div class="w3-container" id="${facility.Facility_Code}">
+                                        </div>
+                                    </div>
+                                </div>`
+            }
+
+            function Create_Links(link) {
+                return `<a href="${link.Video_Link}">${link.Video_Link}</a><br/>`
+            }
+
+        }
+
+
+
+
+
+
+
+    </script>
+
+
+</head>
+<body>
+    <!-- Sidebar/menu -->
+    <nav class="w3-sidebar w3-red w3-collapse w3-top w3-large w3-padding" style="z-index: 3; width: 200px; font-weight: bold; display: none;" id="mySidebar">
+        <br>
+        <div class="w3-container">
+            <h3 class="w3-padding-64"><b>Facilities Enrichment</b></h3>
+        </div>
+        <div class="w3-bar-block">
+            <a href="./Facilities_Galery.html#back_side_bar" class="w3-bar-item w3-button w3-hover-white">back</a>
+            <a href="./Facilities_Galery.html#legs_side_bar" class="w3-bar-item w3-button w3-hover-white">legs</a>
+            <a href="./Facilities_Galery.html#chest_side_bar" class="w3-bar-item w3-button w3-hover-white">chest</a>
+            <a href="./Facilities_Galery.html#biceps_side_bar" class="w3-bar-item w3-button w3-hover-white">biceps</a>
+            <a href="./Facilities_Galery.html#triceps_side_bar" class="w3-bar-item w3-button w3-hover-white">triceps</a>
+            <a href="./Facilities_Galery.html#shoulders_side_bar" class="w3-bar-item w3-button w3-hover-white">shoulders</a>
+        </div>
+    </nav>
+
+    <div class="w3-main" style="margin-left:340px;margin-right:40px">
+
+
+        <!-- back_side_bar content -->
+        <div class="w3-row-padding" id="back_side_bar">
+            <!--<br />-->
+            <div id="header_back">
+                <h3>
+                    back
+                </h3>
+                <br />
+            </div>
+            <div class="w3-row-padding" id="back">
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- legs_side_bar content -->
+
+        <div class="w3-row-padding" id="legs_side_bar">
+            <!--<br />-->
+            <div id="header_legs">
+                <h3>
+                    legs
+                </h3>
+                <br />
+            </div>
+            <div class="w3-row-padding" id="legs">
+
+            </div>
+
+        </div>
+
+
+
+
+        <!-- chest_side_bar content -->
+        <div class="w3-row-padding" id="chest_side_bar">
+            <br />
+            <div id="header_chest">
+                <h3>
+                    chest
+                </h3>
+                <br />
+            </div>
+            <div class="w3-row-padding" id="chest">
+
+            </div>
+        </div>
+
+
+
+
+        <!-- biceps_side_bar content -->
+
+        <div class="w3-row-padding" id="biceps_side_bar">
+            <br />
+            <div id="header_biceps">
+                <h3>
+                    biceps
+                </h3>
+                <br />
+            </div>
+            <div class="w3-row-padding" id="biceps">
+
+            </div>
+        </div>
+
+
+
+        <!--  triceps_side_bar content -->
+
+        <div class="w3-row-padding" id="triceps_side_bar">
+            <br />
+            <div id="header_triceps">
+                <h3>
+                    triceps
+                </h3>
+                <br />
+            </div>
+            <div class="w3-row-padding" id="triceps">
+
+            </div>
+        </div>
+
+
+
+
+        <!--  shoulders_side_bar content -->
+
+        <div class="w3-row-padding" id="shoulders_side_bar">
+            <br />
+            <div id="header_shoulders">
+                <h3>
+                    shoulders
+                </h3>
+                <br />
+            </div>
+            <div class="w3-row-padding" id="shoulders">
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    
+
+</body>
+</html>
