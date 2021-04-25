@@ -1,0 +1,45 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: no-repeat center center fixed;
+    background-image: url('../../pic/ShowDetailsTrainee.jpg');
+    background-size: cover;
+    font-family: sans-serif;
+}
+
+table {
+    padding: 0 50px;
+}
+
+    table tr, td {
+        margin: 5px;
+        padding: 5px;
+    }
+
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.tittle {
+    margin-top: 5px;
+    color: rgba(255,255,255,0.9);
+    font-size: 75px;
+    font-family: 'Playfair Display', serif;
+}
+
+.bottom_slogen {
+    color: rgba(255,255,255,0.4);
+}
+
+.form-box {
+    width: 700px;
+    background: rgba(0,0,0,0.8);
+    margin: 1% auto 1% auto;
+    padding: 30px 0;
+    color: #fff;
+    box-shadow: 0 0 20px 2px rgba(0,0,0,0.5);
+}

@@ -1,0 +1,98 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: no-repeat center center fixed;
+    background-image: url('../../pic/gym_mainMenu.jpg');
+    background-size: cover;
+    font-family: sans-serif;
+}
+
+table {
+    padding: 10px;
+    margin: auto;
+}
+
+thead {
+    background-color: rgba(96, 223, 96, 0.9);
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid white;
+}
+
+tbody {
+    border-top: 2px solid black;
+    border-bottom: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid white;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#t_1 {
+    border-collapse: collapse;
+    padding: 10px;
+    margin: 10px;
+    background-color: rgba(96, 223, 96, 0.8);
+    border-radius: 2%;
+    width: 600px;
+}
+
+#t_1 tr {
+    border: 1px solid black;
+    margin: 30px;
+    padding: 5px;
+}
+
+#t_1 td {
+    border: 1px solid black;
+    margin: auto;
+    padding: 5px;
+}
+
+.tittle {
+    margin-top: 5px;
+    color: rgba(255,255,255,0.9);
+    font-size: 75px;
+    font-family: 'Playfair Display', serif;
+}
+
+.form-box {
+    width: 1300px;
+    height: 960px;
+    background: rgba(0,0,0,0.8);
+    margin: 1% auto 1% auto;
+    padding: 30px 0;
+    color: #fff;
+    box-shadow: 0 0 20px 2px rgba(0,0,0,0.5);
+}
+
+.bottom_slogen {
+    color: rgba(255,255,255,0.4);
+}
+
+.t_up {
+    border-collapse: collapse;
+    padding: 10px;
+    margin: auto;
+    background-color: rgba(96, 223, 96, 0.9);
+    border-radius: 2%;
+    width: 400px;
+}
+
+    .t_up tr {
+        border: 1px solid black;
+        margin: 30px;
+        padding: 5px;
+    }
+
+    .t_up td {
+        border: 1px solid black;
+        margin: auto;
+        padding: 5px;
+    }
