@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="../../pic/icon_website.jpg" />
+    <title>Computer Gym</title>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../Ajax_functions.js"></script>
+
+    <link href="manage2.css" rel="stylesheet" />
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            /*padding: 5px;*/
+            border: 1px solid black;
+        }
+
+        input[type=text] {
+            border: none;
+        }
+
+        button {
+            /*option1*/
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            background-color: #008CBA; /* Blue */
+            /*option2*/
+            /*background-color: white;
+            color: black;
+            border: 2px solid #4CAF50;*/
+        }
+
+        #recommandation_header1 {
+            visibility: hidden;
+        }
+
+        #recommandation_header2 {
+            visibility: hidden;
+        }
+    </style>
+
+
+    <script>
+
+        let STATUS_OK = 200;
+
+        //Function to display all facilities recommendations for a trainee
+        function Build_Trainer_Facilities_Recommandations() {
+
+            let trainer_id = $("#trainer_id").val();
+            let trainee_id = $("#trainee_id").val();
+
+            if (trainer_id == "" || trainee_id == "") {
+                alert("אנא מלא את שני השדות");
+                return;
+            }
+
+            let facilities_recommandations = GetTrainerFacilityRecommendations(trainer_id, trainee_id).responseJSON;
+            let div_facilities_recommandations = $("#facilities_recommandations");
+            div_facilities_recommandations.empty();
+            if (facilities_recommandations.length == 0) {
+                $("#recommandation_header1").css("visibility", "hidden");
+                $("#recommandation_header2").css("visibility", "hidden");
+                alert("לא קיימות המלצות למתאמן ");
+                return;
+            }
+
+
+
+
+            $("#recommandation_header1").css("visibility", "visible");
+            $("#recommandation_header2").css("visibility", "visible");
+
+
+
+
+
+            for (let i = 0; i < facilities_recommandations.length; i++) {
+                div_facilities_recommandations.append(Create_Tr(facilities_recommandations[i]));
+
+            }
+
+
+            function Create_Tr(facility_recommandation) {
+
+                return `<tr>
+                                <td style="background-color:orangered"><input type="text" readonly="readonly" class="${facility_recommandation.Facility_Recommendation_Code_For_Trainee}" value="${facility_recommandation.Facility_Recommendation_Code_For_Trainee}"></td>
+                                <td style="background-color:orangered"><input type="text" readonly="readonly" class="${facility_recommandation.Facility_Recommendation_Code_For_Trainee}" value="${facility_recommandation.Trainer_Id}"></td>
+                                <td style="background-color:orangered"><input type="text" readonly="readonly" class="${facility_recommandation.Facility_Recommendation_Code_For_Trainee}" value="${facility_recommandation.Trainee_Id}"></td>
+                                <td style="background-color:orangered"><input type="text" readonly="readonly" class="${facility_recommandation.Facility_Recommendation_Code_For_Trainee}" value="${facility_recommandation.Facility_Code}"></td>
+                                <td style="background-color:aqua"><input type="text" onchange="Show_Button('update${facility_recommandation.Facility_Recommendation_Code_For_Trainee}')" class="${facility_recommandation.Facility_Recommendation_Code_For_Trainee}" value="${facility_recommandation.Amount_Of_Recommended_Repetitions}"></td>
+                                <td style="background-color:aqua"><input type="text" onchange="Show_Button('update${facility_recommandation.Facility_Recommendation_Code_For_Trainee}')" class="${facility_recommandation.Facility_Recommendation_Code_For_Trainee}" value="${facility_recommandation.Recommended_Weight_To_Lift}"></td>
+                                <td style="border-bottom:hidden;border-left:hidden;border-top:hidden;">
+                                <button onclick="Update_Change_In_Facility_Recommandation(${facility_recommandation.Facility_Recommendation_Code_For_Trainee})" id="update${facility_recommandation.Facility_Recommendation_Code_For_Trainee}" style="visibility:hidden" >שמור שינוי</button>
+                                </td>
+                                </tr>`;
+
+            }
+
+
+        }
+
+
+        function Show_Button(button_code) {
+            $(`#${button_code}`).css('visibility', 'visible');
+        };
+
+        function Hide_Button(button_code) {
+            $(`#${button_code}`).css('visibility', 'hidden');
+        };
+
+
+        //Function to update facility recommendation for trainee
+        function Update_Change_In_Facility_Recommandation(button_code) {
+            $(`#update${button_code}`).css('visibility', 'hidden');
+            let facility_recomndation = $(`.${button_code}`);
+
+
+            let facility_recomndation_data = {
+                Facility_Recommendation_Code_For_Trainee: button_code,
+                Trainer_Id: facility_recomndation[1].value,
+                Trainee_Id: facility_recomndation[2].value,
+                Facility_Code: facility_recomndation[3].value,
+                Amount_Of_Recommended_Repetitions: facility_recomndation[4].value,
+                Recommended_Weight_To_Lift: facility_recomndation[5].value,
+
+            };
+
+            let res = UpdateTrainerFacilityRecommendations(facility_recomndation_data).status;
+            if (res == STATUS_OK) {
+                Build_Trainer_Facilities_Recommandations();
+                alert(`הנתונים נשמרו בהצלחה עבור קוד ההמלצה :  ${button_code}`);
+            }
+            else {
+
+                alert(`שגיאה בהזנת נתונים לקוד ההמלצה: ${button_code} `);
+            }
+
+        }
+
+
+    </script>
+
+
+
+
+</head>
+<body dir="rtl">
+
+
+
+    <div>
+
+        <header>
+            <h1>באפשרותך לבצע שינויים בהמלצות שניתנו על מתקני המכון למתאמנים:</h1>
+        </header>
+
+        <h2>צפייה ועריכת המלצות עבור מתאמן:</h2>
+        <p>אנא מלא את השדות בהתאם כדי לצפות בהמלצות של מתאמן</p>
+        <table>
+            <tr>
+                <td style="border:none">
+                    <span>תעודת זהות מאמן:</span>
+                </td>
+                <td style="border:none">
+                    <input  placeholder="הזן ת.ז" id="trainer_id">
+
+                </td>
+            </tr>
+            <tr>
+                <td style="border:none">
+                    <span>תעודת זהות מתאמן:</span>
+                </td>
+                <td style="border:none">
+                    <input placeholder="הזן ת.ז" id="trainee_id">
+
+                </td>
+            </tr>
+        </table><br />
+
+        <button style="background-color:orangered" id="show_recomandations" onclick="Build_Trainer_Facilities_Recommandations()">הצג המלצות</button>
+        <br />
+        <br />
+
+
+        <div id="recommandation_header1">
+            <h2>עריכת המלצות של מתאמן:</h2>
+            <span style="color:red">ניתן לערוך רק את השדות הצבועים </span> <span style="color:blue">בכחול!</span> <br /> <br />
+        </div>
+        <table>
+
+            <thead >
+
+                <tr id="recommandation_header2">
+                    <td style="background-color:orangered">קוד המלצה</td>
+                    <td style="background-color:orangered">תעודת זהות מאמן</td>
+                    <td style="background-color:orangered">תעודת זהות מתאמן</td>
+                    <td style="background-color:orangered">קוד מתקן</td>
+                    <td style="background-color:aqua">כמות חזרות מומלצת</td>
+                    <td style="background-color:aqua">כמות משקל מומלצת</td>
+                </tr>
+              
+
+            </thead>
+            <tbody id="facilities_recommandations"></tbody>
+
+        </table>
+
+    </div>
+
+
+</body>
+</html>

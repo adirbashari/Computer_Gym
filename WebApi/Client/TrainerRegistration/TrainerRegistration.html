@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="../../pic/icon_website.jpg" />
+    <title>Computer Gym</title>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link href="TrainerInformation.css" rel="stylesheet" />
+    <script src="../Ajax_functions.js"></script>
+    <title></title>
+    <style>
+
+        button {
+            /*option1*/
+            color: white;
+            text-align: center;
+            text-decoration: #000000;
+            font-size: 16px;
+            background: none;
+            border: 2px solid #ffffff;
+            /*option2*/
+            /*background-color: white;
+            color: black;
+            border: 2px solid #4CAF50;*/
+        }
+    </style>
+
+    <script>
+        let REGISTERATION_CODE = "1234"
+        let STATUS_OK = 200;
+
+        //Function to add a new coach
+        function Add_Trainer() {
+
+            let trianer_data = $(".trainer_information");
+
+            if (trianer_data[6].value != REGISTERATION_CODE) {
+                alert("שגיאה בהזנת קוד הרשמה");
+                return;
+            }
+            let trainer = {
+                Trainer_Id: trianer_data[0].value,
+                First_Name: trianer_data[1].value,
+                Last_Name: trianer_data[2].value,
+                User_Name: trianer_data[3].value,
+                Password: trianer_data[4].value,
+                Phone_Number: trianer_data[5].value,
+            };
+
+            if (trainer.Trainer_Id.length != 9) {
+                alert("אנא הזן ת.ז בעלת 9 ספרות");
+                return;
+            }
+
+            if (trainer.Trainer_Id == "" || trainer.First_Name == "" || trainer.Last_Name == "" || trainer.User_Name == "" || trainer.Password == "" || trainer.Phone_Number == "") {
+                alert("אנא מלא את כל השדות בבקשה");
+                return;
+            }
+
+
+            let db_id_password = GetTrainerIdAndPassword(trianer_data[0].value);
+            if (db_id_password.responseJSON != undefined) {
+                alert("קיים כבר מאמן בעל תעודת זהות זהה הנך מועבר לדף התחברות");
+                location.href = "../TrianerLogin/TrainerLogin.html";
+                return;
+            }
+
+            let status = AddTrainer(trainer);
+            if (status.status != STATUS_OK) {
+                alert("שגיאה בהזנת נתונים נסה שנית");
+            }
+            else {
+                alert("הרשמה בוצעה בהצלחה הנך מועבר לדף ההתחברות");
+                location.href = "../TrianerLogin/TrainerLogin.html";
+            }
+
+
+
+        }
+
+
+
+
+    </script>
+</head>
+<body dir="rtl">
+    <div>
+        <h1 class="tittle">Computer Gym</h1>
+    </div>
+
+    <div class="form-box">
+        <h1>הרשמת מאמן</h1>
+        <div id="personal_information">
+            <!--<form>-->
+            <table>
+                <tr>
+                    <td>
+                        <span>תעודת זהות:</span>
+                    </td>
+                    <td>
+                        <input  type="number" class="trainer_information" style="background-color:aliceblue;border-color:white" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>שם פרטי:</span>
+                    </td>
+                    <td>
+                        <input class="trainer_information" style="background-color:aliceblue;border-color:white" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>שם משפחה:</span>
+                    </td>
+                    <td>
+                        <input class="trainer_information" style="background-color:aliceblue;border-color:white" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>שם משתמש:</span>
+                    </td>
+                    <td>
+                        <input class="trainer_information" style="background-color:aliceblue;border-color:white" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>סיסמא:</span>
+                    </td>
+                    <td>
+                        <input class="trainer_information" style="background-color:aliceblue;border-color:white" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>מספר טלפון:</span>
+                    </td>
+                    <td>
+                        <input class="trainer_information" style="background-color:aliceblue;border-color:white" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>קוד הרשמה:</span>
+                    </td>
+                    <td>
+                        <input class="trainer_information" style="background-color:aliceblue;border-color:white" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button onclick="Add_Trainer()" style="visibility:visible">הרשמה</button>
+                    </td>
+                </tr>
+
+            </table>
+            <!--</form>-->
+          
+        </div>
+
+    </div>
+</body>
+</html>
