@@ -1,2 +1,3 @@
-# adir-ido-computer_gym
-Web app, which will be built for a gymnast, a personal training program.
+# computer_gym
+A web application for building a training program for trainees at the gym. 
+Written in c#, HTML, JavaScript, css.
